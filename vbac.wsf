@@ -34,6 +34,16 @@ Options:
 </resource>
 <script language="JScript">
 <![CDATA[
+// Use WOW64 if 64bit
+var objWshShell = new ActiveXObject("WScript.Shell");
+if(objWshShell.Environment("Process").Item("PROCESSOR_ARCHITECTURE").toUpperCase() != "X86") {
+    var strCmd = "%windir%\\SysWOW64\\cscript \"" + WScript.ScriptFullName + "\"";
+    for (var i = 0; i < WScript.Arguments.length; i++) strCmd = strCmd + " " + WScript.Arguments.item(i);
+    WScript.Echo(strCmd);
+    WScript.Quit(objWshShell.run("cmd /C " + strCmd));
+}
+
+
 // Enumerations:
 //   Word   - http://msdn.microsoft.com/en-us/library/office/jj684104.aspx
 //   Excel  - http://msdn.microsoft.com/en-us/library/office/ff838815.aspx
